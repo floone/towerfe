@@ -1,9 +1,11 @@
 require 'sinatra'
 require 'rest-client'
 require 'json'
+#require 'parallel'
 
 get '/templates' do
   json = get_job_templates(params['project'], params['playbook'])
+  #Parallel.each(json['results']) do |t|
   json['results'].each do |t|
     recent = t['summary_fields']['recent_jobs']
     if recent.length > 0 then
