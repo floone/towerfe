@@ -26,11 +26,16 @@ get '/templates/:id' do
 end
 
 def get_git_info(job_id)
-  raw = get_tower('/project_updates/' + (job_id+1).to_s + '/stdout/?format=txt')
-  search = '"after": '
-  from = raw.index(search) + search.length + 1
-  raw = raw[from..raw.length]
-  raw = raw[0..raw.index('"')-1]
+  begin
+    raw = get_tower('/project_updates/' + (job_id+1).to_s + '/stdout/?format=txt')
+    search = '"after": '
+    from = raw.index(search) + search.length + 1
+    raw = raw[from..raw.length]
+    raw = raw[0..raw.index('"')-1]
+  rescue => e
+    puts e
+    'ERR'
+  end
 end
 
 def get_job_template(id)
