@@ -14,8 +14,10 @@
   <% if (t['summary_fields']['last_job']) %>
     <td><%= t['summary_fields']['last_job']['finished'] %></td>
     <td><%= t['summary_fields']['last_job']['status'] %></td>
+    <td><%= t['summary_fields']['last_job']['hash'][0..6] %></td>
   <% else %>
     <td>No run yet</td>
+    <td></td>
     <td></td>
   <% end %>
   <td>

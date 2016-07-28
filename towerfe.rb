@@ -4,6 +4,13 @@ require 'json'
 
 get '/templates' do
   json = get_job_templates(params['project'], params['playbook'])
+  json['results'].each do |t|
+    recent = t['summary_fields']['recent_jobs']
+    if recent.length > 0 then
+      hash = get_git_info(recent.at(0)['id'])
+      t['summary_fields']['last_job']['hash'] = hash
+    end
+  end
   @templates = json['results']
   erb :templates
 end
