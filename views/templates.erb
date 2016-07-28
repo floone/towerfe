@@ -1,0 +1,24 @@
+<table>
+<tr>
+  <th>Id</td>
+  <th>Name</td>
+  <th>Playbook</td>
+  <th>Last run</th>
+  <th>Status</th>
+</tr>
+<% @templates.each do |t| %>
+<tr>
+  <td><a href="/templates/<%= t['id'] %>"><%= t['id'] %></a></td>
+  <td><%= t['name'] %></td>
+  <td><%= t['playbook'] %></td>
+  <% if (t['summary_fields']['last_job']) %>
+    <td><%= t['summary_fields']['last_job']['finished'] %></td>
+    <td><%= t['summary_fields']['last_job']['status'] %></td>
+  <% else %>
+    <td>No run yet</td>
+    <td></td>
+  <% end %>
+  <td>
+</tr>
+<% end %>
+</table>
