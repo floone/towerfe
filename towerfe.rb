@@ -99,7 +99,14 @@ def get_job_templates(querystring)
 end
 
 def get_tower(resource)
-  RestClient.get 'https://ansible.it.bwns.ch/api/v1' + resource, {:Authorization => 'Basic dGFhemVmbDE6bG9naW4xMjM='}
+  #RestClient.get 'https://ansible.it.bwns.ch/api/v1' + resource, {:Authorization => 'Basic dGFhemVmbDE6bG9naW4xMjM='}
+  RestClient::Request.execute(
+    method: :get,
+    url: 'https://ansible.it.bwns.ch/api/v1' + resource,
+    timeout: 20,
+    headers: {:Authorization => 'Basic dGFhemVmbDE6bG9naW4xMjM='},
+    :verify_ssl => false
+  )
 end
 
 def git(cmd)
