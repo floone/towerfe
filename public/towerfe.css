@@ -1,0 +1,90 @@
+/* Reset (http://meyerweb.com/eric/tools/css/reset/) */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* TowerFE */
+body {
+    font-family: arial,sans-serif;
+}
+
+th {
+    text-align: left;
+    color: #bbb;
+}
+
+th, td {
+    font-size: small;
+    padding: 5px 8px;
+}
+
+#headersearch {
+    padding-left: 100px;
+    background: #f2f2f2;
+    border-bottom: 1px solid #e4e4e4;
+    height: 51px;
+    margin-bottom: 20px;
+}
+
+#headersearch input[type=text] {
+    width: 550px;
+    padding: 9px 12px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+}
+
+#results {
+    padding-left: 100px;
+}
+
+em {
+    font-weight: bold;
+}
+
+p.results {
+    font-size: small;
+    color: #888;
+    padding-left: 8px;
+    margin-bottom: 16px;
+}

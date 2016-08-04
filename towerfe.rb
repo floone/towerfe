@@ -4,9 +4,9 @@ require 'json'
 #require 'parallel'
 
 get '/templates/' do
-  @query = ''
+  t = Time.now
   q = params['q']
-  if (q) then
+  if (q && q != '') then
     raise "q must match the rules" unless q =~ /^[a-zA-Z0-9_ \.@]+$/
     @query = q
     if q.end_with? '.yml' then
@@ -26,11 +26,14 @@ get '/templates/' do
       if recent.length > 0 then
         hash = get_git_info(recent.at(0)['id'])
         t['summary_fields']['last_job']['hash'] = hash
-        t['summary_fields']['last_job']['gitinfo'] = git('log -1 --pretty="format: %h %<(20,trunc)%s (%cr)" ' + hash)
+        msg = git('log -1 --pretty="format: %<(20,trunc)%s (%cr)" ' + hash)
+        msg = '... could not find commit' if msg == ''
+        t['summary_fields']['last_job']['gitinfo'] = msg
       end
     end
     @templates = json['results']
   end
+  @backend_time = Time.now - t
   erb :templates
 end
 

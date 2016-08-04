@@ -3,12 +3,19 @@
 <head>
   <meta charset="utf-8">
   <title>TowerFE</title>
+  <link rel="stylesheet" href="/towerfe.css" type="text/css" />
 </head>
 <body>
-<form id="search" method="GET">
-  <input type="text" name="q" value="<%= @query %>" />
+<form id="headersearch" method="GET">
+  <input type="text" name="q" value="<%= @query if @query %>" />
 </form>
-<% if @templates %>
+<div id="results">
+<% if @templates && ! @templates.empty? %>
+  <p class="results">
+    <%= @templates.length %>
+     result<%= 's' if @templates.length > 1 %>
+     (<%= '%.2f' % @backend_time %> seconds)
+  </p>
   <table>
   <tr>
     <th>Name</th>
@@ -16,25 +23,33 @@
     <th>Branch</th>
     <th>Last run</th>
     <th>Status</th>
-    <th>Gitinfo</th>
+    <th>Hash</th>
+    <th>Commit message</th>
   </tr>
   <% @templates.each do |t| %>
   <tr>
-    <td><a href="/templates/<%= t['id'] %>"><%= t['name'] %></a></td>
+    <td><a href="/templates/<%= t['id'] %>"><%= t['name'][7..35] %></a></td>
     <td><%= t['playbook'] %></td>
     <td><%= t['project_scm_branch'] %></td>
     <% if (t['summary_fields']['last_job']) %>
-      <td><%= t['summary_fields']['last_job']['finished'] %></td>
+      <td><%= t['summary_fields']['last_job']['finished'][0..15] %></td>
       <td><%= t['summary_fields']['last_job']['status'] %></td>
+      <td><%= t['summary_fields']['last_job']['hash'][0..6] %></td>
       <td><%= t['summary_fields']['last_job']['gitinfo'] %></td>
     <% else %>
       <td>No run yet</td>
+      <td></td>
       <td></td>
       <td></td>
     <% end %>
   </tr>
   <% end %>
   </table>
+<% elsif @query && ! @query.empty? %>
+  <p>Your search - <em><%= @query %></em> - did not match any playbooks.</p>
+<% else %>
+  <p>Use the search above ;-)</p>
 <% end %>
+</div>
 </body>
 </html>
