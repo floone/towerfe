@@ -1,26 +1,40 @@
-<table>
-<tr>
-  <th>Id</td>
-  <th>Name</td>
-  <th>Playbook</td>
-  <th>Last run</th>
-  <th>Status</th>
-</tr>
-<% @templates.each do |t| %>
-<tr>
-  <td><a href="/templates/<%= t['id'] %>"><%= t['id'] %></a></td>
-  <td><%= t['name'] %></td>
-  <td><%= t['playbook'] %></td>
-  <% if (t['summary_fields']['last_job']) %>
-    <td><%= t['summary_fields']['last_job']['finished'] %></td>
-    <td><%= t['summary_fields']['last_job']['status'] %></td>
-    <td><%= t['summary_fields']['last_job']['hash'][0..6] %></td>
-  <% else %>
-    <td>No run yet</td>
-    <td></td>
-    <td></td>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TowerFE</title>
+</head>
+<body>
+<form id="search" method="GET">
+  <input type="text" name="q" value="<%= @query %>" />
+</form>
+<% if @templates %>
+  <table>
+  <tr>
+    <th>Name</th>
+    <th>Playbook</th>
+    <th>Branch</th>
+    <th>Last run</th>
+    <th>Status</th>
+    <th>Gitinfo</th>
+  </tr>
+  <% @templates.each do |t| %>
+  <tr>
+    <td><a href="/templates/<%= t['id'] %>"><%= t['name'] %></a></td>
+    <td><%= t['playbook'] %></td>
+    <td><%= t['project_scm_branch'] %></td>
+    <% if (t['summary_fields']['last_job']) %>
+      <td><%= t['summary_fields']['last_job']['finished'] %></td>
+      <td><%= t['summary_fields']['last_job']['status'] %></td>
+      <td><%= t['summary_fields']['last_job']['gitinfo'] %></td>
+    <% else %>
+      <td>No run yet</td>
+      <td></td>
+      <td></td>
+    <% end %>
+  </tr>
   <% end %>
-  <td>
-</tr>
+  </table>
 <% end %>
-</table>
+</body>
+</html>
