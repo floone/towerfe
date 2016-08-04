@@ -1,18 +1,22 @@
 # TowerFE
 
-## Development Environment
 
-    gem install sinatra restart
+## Development
 
 For Windows, additionally
 
     gem install wdm
 
-
-Run:
+Run locally
 
 restart ruby towerfe.rb
 
-git api
+## Docker
 
-https://git.swisscom.ch/rest/api/1.0/projects/ANSIBLE/repos/project-swisscom-portal/commits/?until=master
+Build image
+
+    docker build -t floone/towerfe .
+
+Run in production mode
+
+    docker run --rm -e RACK_ENV=production --name tf -p 4567:4567 floone/towerfe

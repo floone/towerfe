@@ -1,7 +1,11 @@
+#!/usr/local/bin/ruby -w
 require 'sinatra'
 require 'rest-client'
 require 'json'
 #require 'parallel'
+
+# Listen on all interfaces to support docker port mapping
+set :bind, '0.0.0.0'
 
 get '/' do
   redirect to('/templates/')
