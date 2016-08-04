@@ -3,6 +3,14 @@ require 'rest-client'
 require 'json'
 #require 'parallel'
 
+get '/' do
+  redirect to('/templates/')
+end
+
+get '/templates' do
+  redirect to('/templates/')
+end
+
 get '/templates/' do
   t = Time.now
   q = params['q']
