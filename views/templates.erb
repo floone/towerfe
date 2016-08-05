@@ -46,9 +46,13 @@
   <% end %>
   </table>
 <% elsif @query && ! @query.empty? %>
-  <p>Your search - <em><%= @query %></em> - did not match any playbooks.</p>
+  <p>Your search - <em><%= @query %></em> - did not match any job templates.</p>
 <% else %>
-  <p>Use the search above.</p>
+  <p>Use the search above to find job templates that match</p>
+  <ul>
+    <li>a name pattern (case-insensitive contains)</li>
+    <li>an exact playbook name that ends with .yml</li>
+  </ul>
 <% end %>
 </div>
 </body>
