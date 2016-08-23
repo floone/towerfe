@@ -28,6 +28,7 @@ get '/templates/' do
     end
   end
   if (json)
+    git('pull')
     projects = get_projects()
     #Parallel.each(json['results']) do |t|
     json['results'].each do |t|
@@ -38,8 +39,12 @@ get '/templates/' do
       if recent.length > 0 then
         hash = get_git_info(recent.at(0)['id'])
         t['summary_fields']['last_job']['hash'] = hash
-        msg = git('log -1 --pretty="format: %<(20,trunc)%s (%cr)" ' + hash)
-        msg = '... could not find commit' if msg == ''
+        msg = git('log -1 --pretty="format: %<(30,trunc)%s (%cr)" ' + hash)
+        if msg == '' then
+          msg = '... could not find commit'
+        else
+          msg = get_git_behind(hash) + ' ' + msg
+        end
         t['summary_fields']['last_job']['gitinfo'] = msg
       end
     end
@@ -57,6 +62,15 @@ get '/templates/:id' do
   @template = json
   @gitinfo = get_git_info(last_job_id)
   erb :template
+end
+
+def get_git_behind(hash)
+  hashes = git('rev-list ' + hash + '..HEAD')
+  if hashes.lines.length == 0 then
+    '[HEAD]'
+  else
+    '[+' + hashes.lines.length.to_s + ']'
+  end
 end
 
 def get_git_info(job_id)
@@ -99,7 +113,6 @@ def get_job_templates(querystring)
 end
 
 def get_tower(resource)
-  #RestClient.get 'https://ansible.it.bwns.ch/api/v1' + resource, {:Authorization => 'Basic dGFhemVmbDE6bG9naW4xMjM='}
   RestClient::Request.execute(
     method: :get,
     url: 'https://ansible.it.bwns.ch/api/v1' + resource,
