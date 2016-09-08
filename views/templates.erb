@@ -25,6 +25,7 @@
     <th>Status</th>
     <th>Hash</th>
     <th>Commit message</th>
+    <th>Launch</th>
   </tr>
   <% @templates.each do |t| %>
   <tr>
@@ -42,6 +43,7 @@
       <td></td>
       <td></td>
     <% end %>
+    <td><form method="post" target="_blank"  action="/templates/<%= t['id'] %>/launch/"><input class="listaction" value="Run" type="submit"/></form></td>
   </tr>
   <% end %>
   </table>

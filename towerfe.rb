@@ -28,7 +28,8 @@ get '/templates/' do
     end
   end
   if (json)
-    git('pull')
+    git('fetch --all')
+    #git('pull --all')
     projects = get_projects()
     #Parallel.each(json['results']) do |t|
     json['results'].each do |t|
@@ -62,6 +63,13 @@ get '/templates/:id' do
   @template = json
   @gitinfo = get_git_info(last_job_id)
   erb :template
+end
+
+post '/templates/:id/launch/' do
+  id = params['id']
+  raise "id must be numeric" unless id =~ /^[0-9]+$/
+  @job = JSON.parse(post_tower("/job_templates/#{id}/launch/"))
+  erb :job
 end
 
 def get_git_behind(hash)
@@ -115,6 +123,16 @@ end
 def get_tower(resource)
   RestClient::Request.execute(
     method: :get,
+    url: 'https://ansible.it.bwns.ch/api/v1' + resource,
+    timeout: 20,
+    headers: {:Authorization => 'Basic dGFhemVmbDE6bG9naW4xMjM='},
+    :verify_ssl => false
+  )
+end
+
+def post_tower(resource)
+  RestClient::Request.execute(
+    method: :post,
     url: 'https://ansible.it.bwns.ch/api/v1' + resource,
     timeout: 20,
     headers: {:Authorization => 'Basic dGFhemVmbDE6bG9naW4xMjM='},
