@@ -2,7 +2,6 @@
 require 'sinatra'
 require 'rest-client'
 require 'json'
-#require 'parallel'
 
 # Listen on all interfaces to support docker port mapping
 set :bind, '0.0.0.0'
@@ -31,7 +30,6 @@ get '/templates/' do
     git('fetch --all')
     #git('pull --all')
     projects = get_projects()
-    #Parallel.each(json['results']) do |t|
     json['results'].each do |t|
       project = projects[t['project']]
       t['project_scm_url'] = project['scm_url'];
