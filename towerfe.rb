@@ -133,18 +133,16 @@ def get_job_stdout(id)
 end
 
 def get_tower(resource)
-  RestClient::Request.execute(
-    method: :get,
-    url: 'https://ansible.it.bwns.ch/api/v1' + resource,
-    timeout: 20,
-    headers: {:Authorization => 'Basic dGFhemVmbDE6bG9naW4xMjM='},
-    :verify_ssl => false
-  )
+  call_tower(resource, :get)
 end
 
 def post_tower(resource)
+  call_tower(resource, :post)
+end
+
+def call_tower(resource, method)
   RestClient::Request.execute(
-    method: :post,
+    method: method,
     url: 'https://ansible.it.bwns.ch/api/v1' + resource,
     timeout: 20,
     headers: {:Authorization => 'Basic dGFhemVmbDE6bG9naW4xMjM='},
