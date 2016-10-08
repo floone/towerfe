@@ -65,11 +65,19 @@ get '/templates/:id' do
   erb :template
 end
 
+get '/jobs/:id' do
+  id = params['id']
+  raise "id must be numeric" unless id =~ /^[0-9]+$/
+  txt = get_job_stdout(id)
+  @job = { 'job' => id, 'stdout' => txt }
+  erb :job
+end
+
 post '/templates/:id/launch/' do
   id = params['id']
   raise "id must be numeric" unless id =~ /^[0-9]+$/
   @job = JSON.parse(post_tower("/job_templates/#{id}/launch/"))
-  erb :job
+  redirect '/jobs/' + @job['job'].to_s
 end
 
 def get_git_behind(hash)
@@ -118,6 +126,10 @@ end
 def get_job_templates(querystring)
   query = '/job_templates/?page_size=50&' + querystring
   JSON.parse(get_tower(query))
+end
+
+def get_job_stdout(id)
+  get_tower('/jobs/' + id + '/stdout/?format=txt')
 end
 
 def get_tower(resource)
