@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="refresh" content="10">
   <title>TowerFE</title>
 </head>
-<body>
+<body onload="window.scrollTo(0,document.body.scrollHeight);">
 <h1>Job <%= @job['job'] %></h1>
 <pre>
 <%= @job['stdout'] %>
