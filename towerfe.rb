@@ -27,7 +27,8 @@ get '/templates/' do
     end
   end
   if (json)
-    git('pull --all')
+    git('fetch -p')
+    git('reset --hard origin/master')
     projects = get_projects()
     json['results'].each do |t|
       project = projects[t['project']]
