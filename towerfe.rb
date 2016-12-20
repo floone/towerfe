@@ -6,6 +6,26 @@ require 'json'
 # Listen on all interfaces to support docker port mapping
 set :bind, '0.0.0.0'
 
+enable :sessions
+
+before '/*' do
+  redirect to('/login/') unless (session[:authtoken] or /login/ =~ request.path_info.to_s)
+end
+
+get '/login/' do
+  erb :login
+end
+
+post '/login/' do
+  json = login_tower(params['username'], params['password'])
+  puts json
+  if json['token'] then
+    session[:authtoken] = json['token']
+    redirect to('/')
+  end
+  redirect to('/login/')
+end
+
 get '/' do
   redirect to('/templates/')
 end
@@ -28,7 +48,6 @@ get '/templates/' do
   end
   if (json)
     git('fetch -p')
-    git('reset --hard origin/master')
     projects = get_projects()
     json['results'].each do |t|
       project = projects[t['project']]
@@ -36,6 +55,7 @@ get '/templates/' do
       t['project_scm_branch'] = project['scm_branch'];
       recent = t['summary_fields']['recent_jobs']
       if recent.length > 0 then
+        git('reset --hard origin/' + project['scm_branch'])
         hash = get_git_info(recent.at(0)['id'])
         t['summary_fields']['last_job']['hash'] = hash
         msg = git('log -1 --pretty="format: %<(30,trunc)%s (%cr)" ' + hash)
@@ -89,7 +109,8 @@ end
 
 def get_git_info(job_id)
   begin
-    raw = get_tower('/project_updates/' + (job_id+1).to_s + '/stdout/?format=txt')
+    #raw = post_tower('/project_updates/' + (job_id+1).to_s + '/stdout/?format=txt')
+    raw = get_tower('/project_updates/' + (job_id+1).to_s + '/stdout?txt_download&token=' + session[:authtoken])
     search = '"after": '
     from = raw.index(search) + search.length + 1
     raw = raw[from..raw.length]
@@ -139,13 +160,28 @@ def post_tower(resource)
 end
 
 def call_tower(resource, method)
-  RestClient::Request.execute(
-    method: method,
-    url: 'https://ansible.it.bwns.ch/api/v1' + resource,
+  begin
+    RestClient::Request.execute(
+      method: method,
+      url: 'https://ansible.it.bwns.ch/api/v1' + resource,
+      timeout: 20,
+      headers: {:Authorization => 'Token ' + session[:authtoken]},
+      :verify_ssl => false
+    )
+  rescue RestClient::Unauthorized
+    session[:authtoken] = ''
+    raise RestClient::Unauthorized
+  end
+end
+
+def login_tower(username, password)
+  JSON.parse(RestClient::Request.execute(
+    method: :post,
+    url: 'https://ansible.it.bwns.ch/api/v1' + '/authtoken/',
     timeout: 20,
-    headers: {:Authorization => 'Basic dGFhemVmbDE6bG9naW4xMjM='},
-    :verify_ssl => false
-  )
+    :verify_ssl => false,
+    payload: {:username => username, :password => password}
+  ))
 end
 
 def git(cmd)
