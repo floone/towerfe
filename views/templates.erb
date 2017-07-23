@@ -6,12 +6,7 @@
   <link rel="stylesheet" href="/towerfe.css" type="text/css" />
 </head>
 <body>
-<div id="headersearch">
-<form method="GET">
-  <input type="text" name="q" value="<%= @query if @query %>" />
-  Logged in: <%= session[:username] if session[:username] %>
-</form>
-</div>
+<%= erb :header %>
 <div id="results">
 <% if @templates && ! @templates.empty? %>
   <p class="results">

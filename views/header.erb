@@ -1,0 +1,6 @@
+<div id="headersearch">
+<form method="GET">
+  <input type="text" name="q" value="<%= @query if @query %>" />
+  Logged in: <%= session[:username] if session[:username] %>
+</form>
+</div>
