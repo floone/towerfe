@@ -20,14 +20,14 @@ post '/login/' do
   json = login_tower(params['username'], params['password'])
   puts json
   if json['token'] then
-    session[:authtoken] = json['token']
+    reset_session_info(params['username'], json['token'])
     redirect to('/')
   end
   redirect to('/login/')
 end
 
 get '/logout/' do
-  session[:authtoken] = nil
+  reset_session_info
   redirect to('/login/')
 end
 
@@ -174,7 +174,7 @@ def call_tower(resource, method)
       :verify_ssl => false
     )
   rescue RestClient::Unauthorized
-    session[:authtoken] = nil
+    reset_session_info
     redirect to('/login/')
   end
 end
@@ -191,4 +191,9 @@ end
 
 def git(cmd)
   `git -C git/workingcopy #{cmd}`
+end
+
+def reset_session_info(username = nil, authtoken = nil)
+  session[:username] = username
+  session[:authtoken] = authtoken
 end
