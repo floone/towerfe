@@ -35,6 +35,13 @@ get '/' do
   redirect to('/templates/')
 end
 
+get '/projects/' do
+  t = Time.now
+  @projects = JSON.parse(get_tower('/projects/'))['results']
+  @backend_time = Time.now - t
+  erb :projects
+end
+
 get '/templates' do
   redirect to('/templates/')
 end
