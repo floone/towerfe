@@ -1,17 +1,36 @@
 # TowerFE
 
+## Run
 
-## Development
+### Manually (for development)
 
-For Windows, additionally
+Clone the git repository that holds the Ansible configurations to `./git/workingcopy`:
 
-    gem install wdm
+    mkdir -p git
+    git clone ssh://git@git.example.com/ansible/project.git git/workingcopy
 
-Run locally
+Install the gems:
 
-restart ruby towerfe.rb
+    gem install -g Gemfile
 
-## Docker
+Run:
+
+    ./towerfe.rb
+
+### Notes on OSX
+
+On OSX, I use rbenv (https://github.com/rbenv/rbenv).
+
+    brew update
+    brew install rbenv
+    rbenv init
+
+Additionally, I use the `restart` utility for convenience:
+
+    gem install restart
+    restart ruby ./towerfe.rb
+
+### Docker
 
 Build image
 
