@@ -26,6 +26,11 @@ post '/login/' do
   redirect to('/login/')
 end
 
+get '/logout/' do
+  session[:authtoken] = nil
+  redirect to('/login/')
+end
+
 get '/' do
   redirect to('/templates/')
 end
