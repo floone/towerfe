@@ -169,8 +169,8 @@ def call_tower(resource, method)
       :verify_ssl => false
     )
   rescue RestClient::Unauthorized
-    session[:authtoken] = ''
-    raise RestClient::Unauthorized
+    session[:authtoken] = nil
+    redirect to('/login/')
   end
 end
 
