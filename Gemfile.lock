@@ -15,7 +15,6 @@ GEM
     rack-protection (1.5.3)
       rack
     rest-client (2.0.0)
-      ffi (~> 1.9)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
@@ -29,12 +28,9 @@ GEM
     unf_ext (0.0.7.2)
 
 PLATFORMS
-  x64-mingw32
+  ruby
 
 DEPENDENCIES
   json
   rest-client
   sinatra
-
-BUNDLED WITH
-   1.12.5
