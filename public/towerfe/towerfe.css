@@ -86,19 +86,26 @@ th, td {
     text-decoration: none;
     color: #777;
     display: inline-block;
-    padding-left: 7px;
-    padding-right: 7px;
+    padding-left: 12px;
+    padding-right: 12px;
+    height: 23px;
 }
 
 #headernav a:hover {
     color: #333;
 }
 
+#headernav a.activepage, #headernav a.activepage:hover {
+    font-weight: bold;
+    color: #4285f4;
+    border-bottom: 3px solid #4285f4;
+}
+
 span.loginstatus {
     display: inline-block;
     color: #bbb;
-    margin-left: 7px;
-    padding-left: 13px;
+    margin-left: 12px;
+    padding-left: 16px;
     border-left: 1px solid #bbb;
 }
 

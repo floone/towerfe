@@ -5,7 +5,7 @@
 </div>
 <div id="headernav">
 <a
-  href="/towerfe/projects/">Projects</a><a
-  href="/towerfe/templates/">Templates</a><span
+  class="<%= "activepage" if active_page?("projects") %>" href="/towerfe/projects/">Projects</a><a
+  class="<%= "activepage" if active_page?("templates") %>" href="/towerfe/templates/">Templates</a><span
   class="loginstatus">Logged in: <%= session[:username] if session[:username] %></span>
 </div>

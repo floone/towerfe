@@ -204,3 +204,7 @@ def reset_session_info(username = nil, authtoken = nil)
   session[:username] = username
   session[:authtoken] = authtoken
 end
+
+def active_page?(path='')
+  request.path_info.start_with?('/towerfe/' + path)
+end
