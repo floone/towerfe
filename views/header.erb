@@ -1,5 +1,5 @@
 <div id="headersearch">
-<form method="GET">
+<form method="GET" action="/towerfe/templates/">
   <input type="text" name="q" value="<%= @query if @query %>" />
   Logged in: <%= session[:username] if session[:username] %>
 </form>

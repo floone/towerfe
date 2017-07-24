@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>TowerFE</title>
-  <link rel="stylesheet" href="/towerfe.css" type="text/css" />
+  <link rel="stylesheet" href="/towerfe/towerfe.css" type="text/css" />
 </head>
 <body>
 <%= erb :header %>
@@ -27,7 +27,7 @@
   </tr>
   <% @templates.each do |t| %>
   <tr>
-    <td><a href="/templates/<%= t['id'] %>"><%= t['name'][7..35] %></a></td>
+    <td><a href="/towerfe/templates/<%= t['id'] %>"><%= t['name'][7..35] %></a></td>
     <td><%= t['playbook'] %></td>
     <td><%= t['project_scm_branch'] %></td>
     <% if (t['summary_fields']['last_job']) %>
@@ -41,7 +41,7 @@
       <td></td>
       <td></td>
     <% end %>
-    <td><form method="post" target="_blank"  action="/templates/<%= t['id'] %>/launch/"><input class="listaction" value="Run" type="submit"/></form></td>
+    <td><form method="post" target="_blank"  action="/towerfe/templates/<%= t['id'] %>/launch/"><input class="listaction" value="Run" type="submit"/></form></td>
   </tr>
   <% end %>
   </table>

@@ -8,45 +8,45 @@ set :bind, '0.0.0.0'
 
 enable :sessions
 
-before '/*' do
-  redirect to('/login/') unless (session[:authtoken] or /login/ =~ request.path_info.to_s)
+before '/towerfe/*' do
+  redirect to('/towerfe/login/') unless (session[:authtoken] or /login/ =~ request.path_info.to_s)
 end
 
-get '/login/' do
+get '/towerfe/login/' do
   erb :login
 end
 
-post '/login/' do
+post '/towerfe/login/' do
   json = login_tower(params['username'], params['password'])
   puts json
   if json['token'] then
     reset_session_info(params['username'], json['token'])
-    redirect to('/')
+    redirect to('/towerfe/')
   end
-  redirect to('/login/')
+  redirect to('/towerfe/login/')
 end
 
-get '/logout/' do
+get '/towerfe/logout/' do
   reset_session_info
-  redirect to('/login/')
+  redirect to('/towerfe/login/')
 end
 
-get '/' do
-  redirect to('/templates/')
+get '/towerfe/' do
+  redirect to('/towerfe/templates/')
 end
 
-get '/projects/' do
+get '/towerfe/projects/' do
   t = Time.now
   @projects = JSON.parse(get_tower('/projects/'))['results']
   @backend_time = Time.now - t
   erb :projects
 end
 
-get '/templates' do
-  redirect to('/templates/')
+get '/towerfe/templates' do
+  redirect to('/towerfe/templates/')
 end
 
-get '/templates/' do
+get '/towerfe/templates/' do
   t = Time.now
   q = params['q']
   if (q && q != '') then
@@ -85,7 +85,7 @@ get '/templates/' do
   erb :templates
 end
 
-get '/templates/:id' do
+get '/towerfe/templates/:id' do
   id = params['id']
   raise "id must be numeric" unless id =~ /^[0-9]+$/
   json = get_job_template("#{id}")
@@ -95,7 +95,7 @@ get '/templates/:id' do
   erb :template
 end
 
-get '/jobs/:id' do
+get '/towerfe/jobs/:id' do
   id = params['id']
   raise "id must be numeric" unless id =~ /^[0-9]+$/
   txt = get_job_stdout(id)
@@ -103,11 +103,11 @@ get '/jobs/:id' do
   erb :job
 end
 
-post '/templates/:id/launch/' do
+post '/towerfe/templates/:id/launch/' do
   id = params['id']
   raise "id must be numeric" unless id =~ /^[0-9]+$/
   @job = JSON.parse(post_tower("/job_templates/#{id}/launch/"))
-  redirect '/jobs/' + @job['job'].to_s
+  redirect '/towerfe/jobs/' + @job['job'].to_s
 end
 
 def get_git_behind(hash)
@@ -182,7 +182,7 @@ def call_tower(resource, method)
     )
   rescue RestClient::Unauthorized
     reset_session_info
-    redirect to('/login/')
+    redirect to('/towerfe/login/')
   end
 end
 
