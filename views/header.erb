@@ -1,6 +1,11 @@
 <div id="headersearch">
 <form method="GET" action="/towerfe/templates/">
   <input type="text" name="q" value="<%= @query if @query %>" />
-  Logged in: <%= session[:username] if session[:username] %>
 </form>
+</div>
+<div id="headernav">
+<a
+  href="/towerfe/projects/">Projects</a><a
+  href="/towerfe/templates/">Templates</a><span
+  class="loginstatus">Logged in: <%= session[:username] if session[:username] %></span>
 </div>
