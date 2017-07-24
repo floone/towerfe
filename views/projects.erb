@@ -16,12 +16,14 @@
   <table>
   <tr>
     <th>Name</th>
+    <th>SCM URL</th>
     <th>Branch</th>
     <th>Credential</th>
   </tr>
   <% @projects.each do |t| %>
   <tr>
     <td><%= t['name'] %></td>
+    <td><%= t['scm_url'] %></td>
     <td><%= t['scm_branch'] %></td>
     <% if (t['summary_fields']['credential']) %>
       <td><%= t['summary_fields']['credential']['name'] %></td>
